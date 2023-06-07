@@ -9,7 +9,6 @@ export class Searchbar extends Component{
     handleNameChange = (evt) => {
         this.setState({ searchName: evt.currentTarget.value.toLowerCase() });
         
-        
     }
 
     handleSubmit = (evt) => {
@@ -19,7 +18,7 @@ export class Searchbar extends Component{
             toast.error("The search string cannot be empty. Please specify your search query.", { theme: "colored" });
             return;
     }
-this.props.onSubmit(this.state.searchName)
+        this.props.onSubmit(this.state.searchName)
         this.reset();
 
     }
