@@ -14,12 +14,13 @@ export class App extends Component {
     images: [],
     isLoading: false,
     error: false,
-    page: 1
+    page: 1,
     }
   
   
   async componentDidUpdate(prevProps, prevState) {
     const { searchName, page } = this.state;
+    console.log(page);
     if(prevState.searchName !== searchName){
       try {
         this.setState({ isLoading: true });
@@ -34,16 +35,16 @@ export class App extends Component {
     
 
   handleSearch = (searchName) => {
-    this.setState({searchName})
+    this.setState({searchName, page: 1})
   }
   
 
   handleButtonLoadMore = async () => {
-    const { searchName, page } = this.state;
+    const { searchName, page} = this.state;
     
     try {
-      const images = await API.getImages(searchName, page );
-      this.setState(prevState => ({ isLoading: true, page: prevState.page + 1, images: [...prevState.images, images]}))
+      const images = await API.getImages(searchName,page + 1);
+      this.setState(prevState => ({ isLoading: true, page: prevState.page + 1, images: [...prevState.images, ...images]}))
     } catch (error) {
       this.setState({ error: true })
       } finally {
@@ -65,7 +66,7 @@ export class App extends Component {
         ) : images.length > 0 ? (
           <>
             <ImageGallery items={images} />
-            <Button onClick={this.handleButtonLoadMore} />
+            <Button onClick={this.handleButtonLoadMore}/>
           </>
         ) : null}
         
