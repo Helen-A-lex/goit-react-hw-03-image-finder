@@ -6,6 +6,8 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import * as API from "services/api"
 import { Loader } from "./Loader/Loader";
 import { Button } from "./Button/Button";
+import { GlobalStyle } from "./GlobalStyle";
+import { Layout } from "./Layout";
 export class App extends Component {
   state = {
     searchName: "",
@@ -54,7 +56,8 @@ export class App extends Component {
   render() {
     const {images,isLoading} = this.state;
     return (
-      <>
+      <Layout>
+        <GlobalStyle/>
         {/* {error && <p> Mistakes!!!</p>} */}
         <Searchbar onSubmit={this.handleSearch} />
        {isLoading ? (
@@ -67,7 +70,7 @@ export class App extends Component {
         ) : null}
         
       <ToastContainer autoClose={3000}/>
-    </>)
+    </Layout>)
     
 
   }
