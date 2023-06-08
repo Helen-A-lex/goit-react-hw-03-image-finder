@@ -4,47 +4,69 @@ import { ToastContainer } from 'react-toastify';
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import * as API from "services/api"
+import { Loader } from "./Loader/Loader";
+import { Button } from "./Button/Button";
 export class App extends Component {
   state = {
     searchName: "",
     images: [],
     isLoading: false,
-    error: false
+    error: false,
+    page: 1
     }
   
   
-  async componentDidMount(){
-       
+  async componentDidUpdate(prevProps, prevState) {
+    const { searchName, page } = this.state;
+    if(prevState.searchName !== searchName){
       try {
-     this.setState({ isLoading: true });
-          const images = await API.getImages(this.state.searchName);
-          console.log(images);
-      this.setState({ images });
-    } catch (error) {
-      this.setState({error: true})
-      }finally {
-      this.setState({ isLoading: false });
+        this.setState({ isLoading: true });
+        const images = await API.getImages(searchName, page);
+        this.setState({ images, page});
+      } catch (error) {
+        this.setState({ error: true })
+      } finally {
+        this.setState({ isLoading: false });
+      }}
     }
-    }
-
-
+    
 
   handleSearch = (searchName) => {
-    {this.setState({searchName})}
+    this.setState({searchName})
   }
   
 
+  handleButtonLoadMore = async () => {
+    const { searchName, page } = this.state;
+    
+    try {
+      const images = await API.getImages(searchName, page );
+      this.setState(prevState => ({ isLoading: true, page: prevState.page + 1, images: [...prevState.images, images]}))
+    } catch (error) {
+      this.setState({ error: true })
+      } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+  
+  
+
   render() {
-    const {images} = this.state;
+    const {images,isLoading} = this.state;
     return (
       <>
         {/* {error && <p> Mistakes!!!</p>} */}
         <Searchbar onSubmit={this.handleSearch} />
-        {/* {images.length > 0 ? <ImageGallery  searchName={this.state.searchName} />: null};
-        {isLoading ? "Loading" : <ImageGallery searchName={this.state.searchName}/>}
-         */}
-        <ImageGallery items={images} searchName={this.state.searchName}/>
-        <ToastContainer autoClose={3000}/>
+       {isLoading ? (
+          <Loader />
+        ) : images.length > 0 ? (
+          <>
+            <ImageGallery items={images} />
+            <Button onClick={this.handleButtonLoadMore} />
+          </>
+        ) : null}
+        
+      <ToastContainer autoClose={3000}/>
     </>)
     
 
