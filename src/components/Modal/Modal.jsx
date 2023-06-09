@@ -19,12 +19,14 @@ export class ModalWindow extends Component {
 
 
     componentDidMount() {
-        window.addEventListener("keydown", this.handleKeyDown )
+        window.addEventListener("keydown", this.handleKeyDown)
+        
     }
 
 
     componentDidUpdate() {
-        window.removeEventListener("keydown",this.handleKeyDown)
+        window.removeEventListener("keydown", this.handleKeyDown)
+        
     }
 
     handleKeyDown = evt => {
