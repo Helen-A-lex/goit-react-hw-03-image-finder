@@ -7,27 +7,31 @@ import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
-
+import { ErrorMessage } from './ErrorMessage/ErrorMessage';
 export class App extends Component {
   state = {
     searchName: '',
     images: [],
     isLoading: false,
-    error: false,
+    error: null,
     page: 1,
   };
 
   async componentDidUpdate(prevProps, prevState) {
     const { searchName, page } = this.state;
-   
+
     if (prevState.searchName !== searchName) {
       try {
-        this.setState({ isLoading: true });
+        this.setState({ isLoading: true, error: null });
         const images = await API.getImages(searchName, page);
         this.scrollStuff();
         this.setState({ images, page });
       } catch (error) {
-        this.setState({ error: true });
+        if (error.code !== 'ERR_CANCELED') {
+          this.setState({
+            error: 'Oops! Something went wrong! Try reloading the page!',
+          });
+        }
       } finally {
         this.setState({ isLoading: false });
       }
@@ -62,11 +66,11 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, error } = this.state;
     return (
       <Layout>
         <GlobalStyle />
-        {/* {error && <p> Mistakes!!!</p>} */}
+
         <Searchbar onSubmit={this.handleSearch} />
         {isLoading ? (
           <Loader />
@@ -76,8 +80,8 @@ export class App extends Component {
             <Button onClick={this.handleButtonLoadMore} />
           </>
         ) : null}
-
-        <ToastContainer autoClose={3000} />
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <ToastContainer autoClose={2000} />
       </Layout>
     );
   }
