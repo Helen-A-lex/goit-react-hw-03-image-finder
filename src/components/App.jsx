@@ -19,11 +19,12 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     const { searchName, page } = this.state;
-    console.log(page);
+   
     if (prevState.searchName !== searchName) {
       try {
         this.setState({ isLoading: true });
         const images = await API.getImages(searchName, page);
+        this.scrollStuff();
         this.setState({ images, page });
       } catch (error) {
         this.setState({ error: true });
@@ -32,6 +33,13 @@ export class App extends Component {
       }
     }
   }
+
+  scrollStuff = () => {
+    window.scrollBy({
+      top: 260 * 2,
+      behavior: 'smooth',
+    });
+  };
 
   handleSearch = searchName => {
     this.setState({ searchName, page: 1 });
@@ -65,7 +73,7 @@ export class App extends Component {
         ) : images.length > 0 ? (
           <>
             <ImageGallery items={images} />
-            <Button onClick={this.handleButtonLoadMore}/>
+            <Button onClick={this.handleButtonLoadMore} />
           </>
         ) : null}
 

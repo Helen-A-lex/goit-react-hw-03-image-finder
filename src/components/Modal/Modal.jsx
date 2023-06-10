@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
-
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import PropTypes from 'prop-types';
 const customStyles = {
   content: {
     width: '1000px',
@@ -29,9 +30,16 @@ export const ModalWindow = ({ image, closeModal, isModalOpen }) => {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={customStyles}
+        onAfterOpen={() => disableBodyScroll(document)}
+        onAfterClose={() => enableBodyScroll(document)}
       >
-        <img src={image.largeImageURL} alt={image.tags} />
+        <img src={image.largeImageURL} alt={image.tags} loading="lazy" />
       </Modal>
     </div>
   );
+};
+ModalWindow.propTypes = {
+  image: PropTypes.objectOf(PropTypes.string).isRequired,
+  closeModal: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
 };

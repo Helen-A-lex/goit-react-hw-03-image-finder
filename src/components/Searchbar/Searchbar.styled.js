@@ -46,7 +46,6 @@ export const SearchFormButton = styled.button`
   width: 48px;
   height: 48px;
   border: 0;
-  background-image: url('https://media.istockphoto.com/id/924437708/ru/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%B7%D0%BD%D0%B0%D1%87%D0%BE%D0%BA-%D1%83%D0%B2%D0%B5%D0%BB%D0%B8%D1%87%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE-%D1%81%D1%82%D0%B5%D0%BA%D0%BB%D0%B0.jpg?b=1&s=170x170&k=20&c=33e3XHD2-yHWPBHV8jHY8b4fAuvRVNczuhVhHxGJUrM=');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;

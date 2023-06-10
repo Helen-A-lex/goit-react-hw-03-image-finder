@@ -18,11 +18,11 @@ export class ImageGalleryItem extends Component {
   render() {
     const { item } = this.props;
     const { isModalOpen } = this.state;
-    console.log(isModalOpen);
+
     return (
       <>
         <Item className="gallery-item" key={item.id} onClick={this.openModal}>
-          <ItemImg src={item.webformatURL} alt={item.tags} />
+          <ItemImg src={item.webformatURL} alt={item.tags} loading="lazy" />
           {isModalOpen && (
             <ModalWindow
               image={item}
