@@ -25,7 +25,7 @@ Modal.setAppElement('#root');
 
 export const ModalWindow = ({ image, closeModal, isModalOpen }) => {
   return (
-    <div>
+    
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -35,7 +35,7 @@ export const ModalWindow = ({ image, closeModal, isModalOpen }) => {
       >
         <img src={image.largeImageURL} alt={image.tags} loading="lazy" />
       </Modal>
-    </div>
+    
   );
 };
 ModalWindow.propTypes = {
