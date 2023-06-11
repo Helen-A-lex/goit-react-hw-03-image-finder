@@ -7,7 +7,7 @@ import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
-import { ErrorMessage } from './ErrorMessage/ErrorMessage';
+import { ErrorMessage, Text } from './ErrorMessage/ErrorMessage';
 export class App extends Component {
   state = {
     searchName: '',
@@ -16,7 +16,8 @@ export class App extends Component {
     error: null,
     page: 1,
     isEmpty: false,
-    isShownButton: false
+    isShownButton: false,
+    perPage: 12
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -32,14 +33,16 @@ export class App extends Component {
   loadImages = async (searchName, page) => {
     this.setState({ isLoading: true, error: null });
     try {
-      const {hits, total, totalHits} = await API.getImages(searchName, page);
+      const {hits, totalHits} = await API.getImages(searchName, page);
       if (!hits.length) {
         this.setState({ isEmpty: true })
         return;
       }
-       this.setState((prevState) => ({
+       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
-        page, isShownButton: page < Math.ceil(total/ totalHits),
+         page,
+         isShownButton: page < Math.ceil(totalHits /this.state.perPage)
+         
       }));
     }
       catch (error) {
@@ -63,24 +66,29 @@ export class App extends Component {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }))
+  
   }
 
+  
+  
+
+
   render() {
-    const { images, isLoading, error,isEmpty} = this.state;
+    const { images, isLoading, error,isEmpty, isShownButton} = this.state;
     return (
       <Layout>
         <GlobalStyle />
         <Searchbar onSubmit={this.handleSearch} />
-        {isEmpty && <p>Sorry. There are no images ... </p>}
+        {isEmpty && <Text >Sorry. There are no images ... </Text>}
         {isLoading ? (
           <Loader />
         ) : images.length > 0 ? (
           <>
             <ImageGallery items={images} />
-           <Button onClick={this.handleButtonLoadMore} />
+             {isShownButton && <Button onClick={this.handleButtonLoadMore} />}
           </>
         ) : null}
-        
+      
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <ToastContainer autoClose={2000} />
       </Layout>
