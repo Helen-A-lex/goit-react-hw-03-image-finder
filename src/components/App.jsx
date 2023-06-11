@@ -39,7 +39,7 @@ export class App extends Component {
       }
        this.setState((prevState) => ({
         images: [...prevState.images, ...hits],
-        page
+        page, isShownButton: page < Math.ceil(total/ totalHits),
       }));
     }
       catch (error) {
