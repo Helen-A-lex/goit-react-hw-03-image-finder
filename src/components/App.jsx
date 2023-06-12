@@ -76,14 +76,12 @@ export class App extends Component {
         <GlobalStyle />
         <Searchbar onSubmit={this.handleSearch} />
         {isEmpty && <Text>Sorry. There are no images ... </Text>}
-        {isLoading ? (
-          <Loader />
-        ) : images.length > 0 ? (
-          <>
-            <ImageGallery items={images} />
-            {isShownButton && <Button onClick={this.handleButtonLoadMore} />}
-          </>
-        ) : null}
+        {isLoading && <Loader />}
+
+        <>
+          <ImageGallery items={images} />
+          {isShownButton && <Button onClick={this.handleButtonLoadMore} />}
+        </>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <ToastContainer autoClose={2000} />

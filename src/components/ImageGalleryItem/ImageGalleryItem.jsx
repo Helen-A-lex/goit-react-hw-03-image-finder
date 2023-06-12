@@ -21,8 +21,8 @@ export class ImageGalleryItem extends Component {
 
     return (
       <>
-        <Item className="gallery-item" key={item.id} onClick={this.openModal}>
-          <ItemImg src={item.webformatURL} alt={item.tags} loading="lazy" />
+        <Item className="gallery-item" key={item.id} >
+          <ItemImg onClick={this.openModal} src={item.webformatURL} alt={item.tags} loading="lazy" />
           {isModalOpen && (
             <ModalWindow
               image={item}
